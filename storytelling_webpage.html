@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>說故事</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #fff7e6, #f3e8ff);
+      color: #3b2f2f;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 24px 10%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    nav a {
+      margin-left: 24px;
+      text-decoration: none;
+      color: #5b4636;
+      font-weight: 600;
+    }
+
+    .hero {
+      padding: 80px 10%;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: 64px;
+      margin-bottom: 20px;
+      color: #4a2c2a;
+    }
+
+    .hero-text p {
+      font-size: 20px;
+      line-height: 1.8;
+      margin-bottom: 32px;
+      color: #6b5a4a;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 14px 28px;
+      background: #8b5cf6;
+      color: white;
+      text-decoration: none;
+      border-radius: 999px;
+      font-weight: bold;
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.75);
+      padding: 32px;
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(80, 60, 40, 0.12);
+      backdrop-filter: blur(10px);
+    }
+
+    .card h2 {
+      margin-bottom: 16px;
+      color: #4a2c2a;
+    }
+
+    .card p {
+      line-height: 1.8;
+      color: #6b5a4a;
+    }
+
+    section {
+      padding: 40px 10% 80px;
+    }
+
+    .section-title {
+      font-size: 36px;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .story-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .generate-box {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .generate-btn {
+      border: none;
+      padding: 14px 32px;
+      background: #8b5cf6;
+      color: white;
+      border-radius: 999px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+    }
+
+    .generate-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .story-item {
+      background: white;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 12px 30px rgba(80, 60, 40, 0.1);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .story-item:hover {
+      transform: translateY(-6px);
+    }
+
+    .story-item h3 {
+      margin-bottom: 12px;
+      color: #8b5cf6;
+    }
+
+    .story-item p {
+      color: #6b5a4a;
+      line-height: 1.7;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: white;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 40px;
+      border-radius: 24px;
+      position: relative;
+    }
+
+    .close-btn {
+      position: sticky;
+      top: 0;
+      margin-left: auto;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border-radius: 999px;
+      font-size: 28px;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .modal-content h2 {
+      margin-bottom: 24px;
+      color: #8b5cf6;
+    }
+
+    .modal-content p {
+      line-height: 2;
+      color: #5b4636;
+      font-size: 18px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px;
+      background: rgba(255, 255, 255, 0.5);
+      color: #7a6654;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 40px;
+      }
+
+      .hero-text h1 {
+        font-size: 44px;
+      }
+
+      .story-list {
+        grid-template-columns: 1fr;
+      }
+
+      nav a {
+        margin: 0 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">說故事</div>
+    <nav>
+      <a href="javascript:void(0)" onclick="openAbout()">關於</a>
+      <a href="javascript:void(0)" id="homeBtn" onclick="showHome()" style="display:none;">返回首頁</a>
+      <a href="javascript:void(0)" onclick="showStories()">故事</a>
+      <a href="#contact">聯絡</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="about" style="min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;">
+      <div class="hero-text" style="max-width:900px;">
+        <h1>泫丞教你把故事說的很67。</h1>
+        <p>
+          每個人心裡都有一段故事。
+          有些故事關於青春，有些關於遺憾；
+          有些藏在夏天的晚風裡，有些則停留在再也回不去的回憶。
+          <br><br>
+          點下「開始閱讀」，走進別人的故事，也許你會在某一句話裡，看見自己。
+        </p>
+        <a href="javascript:void(0)" class="button" onclick="showStories()">開始閱讀</a>
+      </div>
+    </section>
+
+    <section id="stories" style="padding-top:120px; display:none;">
+      <h2 class="section-title">故事分類</h2>
+
+      <div class="generate-box">
+        <button class="generate-btn" onclick="generateStory()">自動生成故事</button>
+        <p style="margin-top:12px;color:#6b5a4a;">不用輸入篇數，每按一次就會新增一篇故事。</p>
+      </div>
+
+      <h3 style="margin-bottom:20px;color:#8b5cf6;font-size:28px;">自動生成</h3>
+      <div class="story-list" id="generatedStories" style="margin-bottom:50px;"></div>
+
+      <h3 style="margin-bottom:20px;color:#8b5cf6;font-size:28px;">青春愛情</h3>
+      <div class="story-list" style="margin-bottom:50px;">
+        <div class="story-item" onclick="openStory('雨天的告白')">
+          <h3>雨天的告白</h3>
+          <p>一場放學後的小雨，讓兩個人終於說出了藏在心裡很久的話。</p>
+        </div>
+
+        <div class="story-item" onclick="openStory('夏天的操場')">
+          <h3>夏天的操場</h3>
+          <p>汗水、夕陽與青春，全部都留在那個再也回不去的夏天。</p>
+        </div>
+
+        <div class="story-item" onclick="openStory('十二月的車站')">
+          <h3>十二月的車站</h3>
+          <p>寒冷的月台上，一句簡單的再見成了最遺憾的結局。</p>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom:20px;color:#8b5cf6;font-size:28px;">奇幻冒險</h3>
+      <div class="story-list" style="margin-bottom:50px;">
+        <div class="story-item" onclick="openStory('最後一班公車')">
+          <h3>最後一班公車</h3>
+          <p>錯過末班車後，他意外踏上了一段奇怪卻溫暖的旅程。</p>
+        </div>
+
+        <div class="story-item" onclick="openStory('星空下的約定')">
+          <h3>星空下的約定</h3>
+          <p>兩個孩子曾在海邊約好長大後再見，但多年後只有一人赴約。</p>
+        </div>
+
+        <div class="story-item" onclick="openStory('消失的相片')">
+          <h3>消失的相片</h3>
+          <p>每當有人從照片裡消失，就代表那段回憶正在被世界遺忘。</p>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom:20px;color:#8b5cf6;font-size:28px;">日常療癒</h3>
+      <div class="story-list" style="margin-bottom:50px;">
+        <div class="story-item" onclick="openStory('深夜便利商店')">
+          <h3>深夜便利商店</h3>
+          <p>在凌晨三點的便利商店裡，一名高中生遇見改變人生的人。</p>
+        </div>
+
+        <div class="story-item" onclick="openStory('圖書館二樓')">
+          <h3>圖書館二樓</h3>
+          <p>有人在圖書館寫下秘密，而另一個人默默讀了很多年。</p>
+        </div>
+
+        <div class="story-item" onclick="openStory('沒有寄出的信')">
+          <h3>沒有寄出的信</h3>
+          <p>多年後重新打開抽屜，他才發現那封信從來沒有寄出去。</p>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom:20px;color:#8b5cf6;font-size:28px;">回憶與成長</h3>
+      <div class="story-list">
+        <div class="story-item" onclick="openStory('被遺忘的紙飛機')">
+          <h3>被遺忘的紙飛機</h3>
+          <p>一架紙飛機，載著十年前沒有送出去的心意。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="aboutModal">
+    <div class="modal-content" style="text-align:center;max-width:700px;">
+      <span class="close-btn" onclick="closeAbout()">×</span>
+      <h2 style="font-size:48px;">關於我們</h2>
+      <img src="sandbox:/mnt/data/IMG_3292.jpeg" alt="傳說中的拳擊手小胖" style="width:100%;max-width:500px;height:500px;object-fit:cover;border-radius:24px;margin:20px auto;display:block;border:6px solid #8b5cf6;box-shadow:0 10px 30px rgba(139,92,246,0.3);">
+      <p style="font-size:42px;font-weight:bold;color:#8b5cf6;margin-bottom:20px;">
+        傳說中的拳擊手小胖
+      </p>
+      <p style="font-size:28px;">
+        0987-487-487
+      </p>
+      <p style="margin-top:24px;">
+        有故事想分享？歡迎聯絡我！
+      </p>
+    </div>
+  </div>
+
+  <div class="modal" id="storyModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeStory()">×</span>
+      <h2 id="storyTitle"></h2>
+      <p id="storyText"></p>
+    </div>
+  </div>
+
+  <script>
+    const longStory = `
+    那年夏天的傍晚，天空被夕陽染成橘紅色。阿辰獨自坐在學校操場旁的階梯上，看著遠方逐漸暗下來的天空。
+
+    他一直很喜歡這個時間，因為所有聲音都會慢慢安靜下來。籃球場的吵鬧聲消失了，教室裡的燈也一間一間熄滅，只剩風輕輕吹過樹葉的聲音。
+
+    其實阿辰最近過得並不好。升學的壓力、朋友之間越來越遠的距離，還有那些不知道該怎麼說出口的心情，全都壓在心裡。
+
+    某天放學後，他在抽屜裡發現一封信。信封上沒有名字，只寫著一句話：「如果累了，就去看看晚上的天空吧。」
+
+    阿辰不知道是誰留下的，但那句話卻讓他記了很久。
+
+    從那天開始，他每天都會留下來看夕陽。有時候一坐就是半小時。
+
+    後來，他慢慢注意到，每天都會有一個女孩坐在不遠處看書。她總是戴著耳機，很安靜，好像與世界隔著一層透明的牆。
+
+    有一天，女孩忽然走過來，把一瓶飲料放到他旁邊。
+
+    「你每天都在這裡，不會無聊嗎？」她問。
+
+    阿辰愣了一下，笑著搖頭。
+
+    「不會，因為這裡很安靜。」
+
+    女孩點點頭，也坐了下來。
+
+    他們沒有聊太多，只是一起看著天空慢慢變暗。
+
+    之後的日子裡，他們開始習慣在傍晚見面。聊學校、聊夢想、聊那些不敢告訴別人的事情。
+
+    阿辰第一次發現，原來有人願意安靜聽自己說話，是一件很溫暖的事。
+
+    有一次女孩問他：「你有沒有想過，以後會變成什麼樣的人？」
+
+    阿辰想了很久才回答。
+
+    「我希望以後的自己，不會忘記現在的感覺。」
+
+    「什麼感覺？」
+
+    「就是現在這樣，可以好好看著天空，然後覺得自己還活著。」
+
+    女孩笑了。
+
+    那天風很輕，晚霞像被水彩渲染開來一樣漂亮。
+
+    很久以後，阿辰才知道，原來當時那封沒有署名的信，就是她留下的。
+
+    有些故事不一定轟轟烈烈。
+
+    有時候，只是在某個普通的傍晚，剛好有人願意坐在你旁邊。
+
+    然後你突然發現，原來孤單也可以慢慢被治癒。`;
+
+    const titles = ['雨後的紙條', '舊書店的燈', '黃昏月台', '窗邊的座位', '沒有名字的信', '夏夜的風', '轉角的貓', '海邊的約定', '便利商店的凌晨', '操場邊的秘密'];
+    const places = ['教室', '圖書館', '車站', '便利商店', '海邊', '舊書店', '操場', '巷口', '公園', '屋頂'];
+    const moods = ['溫柔', '遺憾', '勇敢', '安靜', '懷念', '神秘', '療癒', '感動'];
+    let storyCount = 0;
+
+    function createGeneratedStory(title, place, mood) {
+      return `
+      這是一個發生在${place}的故事。那天的天空不算特別漂亮，風也只是輕輕吹過街角，可是主角阿澤卻一直記得那個下午。因為就在那一天，他遇見了一個改變自己想法的人。
+
+      阿澤原本是個不太喜歡說話的人。他習慣把心事放在心裡，就算難過，也只會裝作沒事。朋友問他怎麼了，他總是笑著說：「沒有啊，我很好。」可是其實，他只是害怕麻煩別人，也害怕自己的心情被別人看見。
+
+      那天放學後，他因為一場突如其來的小雨，被困在${place}。他坐在角落，看著雨水一滴一滴落下，心裡想著最近發生的事情。考試的壓力、朋友的疏遠、家人的期待，好像全部都擠在他的胸口，讓他喘不過氣。
+
+      這時，一個陌生女孩走了過來。她沒有問太多，只是把一包面紙放在他旁邊，然後輕聲說：「有時候不用急著變好，先休息一下也可以。」
+
+      阿澤愣住了。那句話很普通，卻像是剛好說中了他心裡最深的地方。他低下頭，第一次沒有假裝自己很好。
+
+      女孩坐在不遠處，安靜地陪著他等雨停。他們沒有聊很多，只談了天氣、學校，還有一些看似無關緊要的小事。可是阿澤卻覺得，那是他很久以來最輕鬆的一段時間。
+
+      雨停後，女孩準備離開。她回頭對阿澤說：「以後如果覺得累，就來這裡坐一下吧。不是每個答案都要馬上找到。」
+
+      從那天開始，阿澤常常想起這句話。生活沒有立刻變好，困難也沒有突然消失，但他慢慢學會，不必把所有事情都一個人扛著。
+
+      很久以後，他再次經過${place}，發現那裡的一切都和以前差不多。只是他已經不再是當初那個只會沉默的人了。
+
+      有些相遇很短，短到像一場雨；可是有些話卻能留很久，久到足以讓一個人重新相信，自己其實沒有那麼孤單。
+
+      這就是一篇關於${mood}、成長與陪伴的故事。`;
+    }
+
+    function openStory(title, text = longStory) {
+      document.getElementById('storyTitle').innerText = title;
+      document.getElementById('storyText').innerText = text;
+      document.getElementById('storyModal').style.display = 'flex';
+    }
+
+    function generateStory() {
+      storyCount++;
+      const title = titles[Math.floor(Math.random() * titles.length)] + ' ' + storyCount;
+      const place = places[Math.floor(Math.random() * places.length)];
+      const mood = moods[Math.floor(Math.random() * moods.length)];
+      const text = createGeneratedStory(title, place, mood);
+
+      const card = document.createElement('div');
+      card.className = 'story-item';
+      card.onclick = function() {
+        openStory(title, text);
+      };
+      card.innerHTML = `
+        <h3>${title}</h3>
+        <p>一篇自動生成的${mood}故事，場景發生在${place}。</p>
+      `;
+
+      document.getElementById('generatedStories').prepend(card);
+    }
+
+    function openAbout() {
+      document.getElementById('aboutModal').style.display = 'flex';
+    }
+
+    function closeAbout() {
+      document.getElementById('aboutModal').style.display = 'none';
+    }
+
+    function closeStory() {
+      document.getElementById('storyModal').style.display = 'none';
+    }
+
+    function showStories() {
+      document.getElementById('about').style.display = 'none';
+      document.getElementById('stories').style.display = 'block';
+      document.getElementById('homeBtn').style.display = 'inline';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showHome() {
+      document.getElementById('stories').style.display = 'none';
+      document.getElementById('about').style.display = 'flex';
+      document.getElementById('homeBtn').style.display = 'none';
+      closeStory();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onclick = function(event) {
+      const storyModal = document.getElementById('storyModal');
+      const aboutModal = document.getElementById('aboutModal');
+
+      if (event.target === storyModal) {
+        storyModal.style.display = 'none';
+      }
+
+      if (event.target === aboutModal) {
+        aboutModal.style.display = 'none';
+      }
+    }
+  </script>
+
+  <footer id="contact">
+    © 2026 說故事 Storytelling Website
+  </footer>
+</body>
+</html>
