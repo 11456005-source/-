@@ -665,6 +665,7 @@
     function openStory(title, text = longStory1) {
       document.getElementById('storyTitle').innerText = title;
       document.getElementById('storyText').innerText = text;
+      document.getElementById('storyModal').querySelector('.modal-content').scrollTop = 0;
       document.getElementById('storyModal').style.display = 'flex';
     }
 
