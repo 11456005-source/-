@@ -29,6 +29,17 @@
       font-size: 28px;
       font-weight: bold;
       letter-spacing: 2px;
+    
+    /* 👇 新增這兩行，讓文字和圖片垂直排列 */
+      display: flex;
+      flex-direction: column;
+    }
+
+  /* 👇 新增這個區塊，用來控制圖片的大小與間距 */
+    .logo-img {
+      width: 120px;       /* 圖片寬度，你可以自由調整數字 */
+      height: auto;       /* 讓高度等比例縮放 */
+      margin-top: 8px;    /* 圖片與上方「說故事」文字的距離 */
     }
 
     nav a {
@@ -236,7 +247,10 @@
 </head>
 <body>
   <header>
-    <div class="logo">狗哥說故事</div>
+    <div class="logo">
+      狗哥說故事
+      <img src="./git_dog_really.jpg" class="logo-img">
+    </div>
     <nav>
       <a href="javascript:void(0)" onclick="openAbout()">關於</a>
       <a href="javascript:void(0)" id="homeBtn" onclick="showHome()" style="display:none;">返回首頁</a>
