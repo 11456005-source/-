@@ -49,13 +49,27 @@
       margin-top: 14px;
     }
 
+        /* 💡 第一步：把上方大盒子（.hero）自帶的底部留白直接砍掉 */
     .hero {
-      padding: 20px 10% 20px 10%;
+      padding-bottom: 0px !important;
+      margin-bottom: 0px !important;
+    }
+    
+    /* 💡 第二步：直接抓「故事分類」這四個字，強迫它和底下的按鈕一起往上吸 */
+    h2 {
+      margin-top: -40px !important;    /* 負的 margin 會像磁鐵一樣把這一區往上拉 */
+      padding-top: 0px !important;
+      position: relative;
+      z-index: 5;                      /* 確保它不會被其他圖片擋住 */
+    }
+    .hero {
+      padding: 20px 10% 0px 10%;
       display: grid;
+
+      min-height: auto !important;
       grid-template-columns: 1.2fr 0.8fr;
       gap: 40px;
       align-items: center;
-      min-height: auto !important;
     }
 
     .hero-text h1 {
