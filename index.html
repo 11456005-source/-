@@ -50,7 +50,7 @@
     }
 
     .hero {
-      padding: 80px 10%;
+      padding: 40px 10% 20px 10%;
       display: grid;
       grid-template-columns: 1.2fr 0.8fr;
       gap: 40px;
@@ -665,21 +665,18 @@
     function openStory(title, text = longStory1) {
       document.getElementById('storyTitle').innerText = title;
       document.getElementById('storyText').innerText = text;
-      if (document.getElementById('storyText')) {
-        document.getElementById('storyText').scrollTop = 0;
-      }
 
-      const modalContent = document.getElementById('storyModal').querySelector('.modal-content');
-      if (modalContent) {
-        modalContent.scrollTop = 0;
-      }
-
-      document.getElementById('storyModal').scrollTop = 0;
-      
-      window.scrollTo(0, 0);
       document.getElementById('storyModal').style.display = 'flex';
-    }
 
+      setTimeout(() => {
+        const storyText = document.getElementById('storyText');
+        if (storyText) storyText.scrollTop = 0;
+
+        const modalContent = document.querySelector('.modal-content');
+        if (modalContent) modalContent.scrollTop = 0;
+      }, 10);
+    }
+      
     function generateStory() {
       storyCount++;
       const title = titles[Math.floor(Math.random() * titles.length)] + ' ' + storyCount;
